@@ -3,6 +3,7 @@ import java.io.*;
 import java.util.Scanner;
 import java.security.*;
 import javax.crypto.*;
+import java.io.Console;
 
 public class Client{
 	public static void main(String args[]) throws Exception{
@@ -33,13 +34,19 @@ public class Client{
 			 System.out.println("I'M SENDING MY PETITION: " + petition);
 			 
 			 dos.writeUTF(petition);
-			 //answer = dis.readUTF();
-			  //SUDO GEDIT WITH LS
-			 //if(answer.equals("pwd")){ 
+			 answer = dis.readUTF();
+			
+			if(answer.equals("PASSWORD: ")){
+			 	System.out.println(answer);
+			 	Scanner pass = new Scanner(System.in);
+				petition = pass.nextLine();	
+				dos.writeUTF(petition);
 				
-			//}
-
-			 //System.out.println("THE SERVER'S MESSAGE IS: " + answer);
+			 }
+			 else{ 
+			 	System.out.println("THE SERVER'S MESSAGE IS: " + answer);
+			 }
+			 
 			 }
 			 while(!petition.equals("close"));
 			 dos.close();
