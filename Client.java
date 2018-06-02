@@ -1,29 +1,47 @@
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
+import java.security.*;
+import javax.crypto.*;
 
 public class Client{
-	public static void main(String args[]){
+	public static void main(String args[]) throws Exception{
 		//DECLARATION
 		 Socket socket = null;
-		 String petition;
+		 String petition ="";
 		 String answer = null;
+		 String specialKey = "";
 		 try
 			 {
+			 //NEW CODE FOR MATCHING PASSWORDS
+			 ObjectInputStream ois = new ObjectInputStream(new FileInputStream("password.ser"));
+			 Key password = (Key)ois.readObject();
+			 ois.close();
+			 System.out.println("CLIENT'S KEY: "+password);
+
 			 System.out.println("I'VE CONNECTED ME TO THE PORT 8000");
 			 socket = new Socket(args[0],8000);
-
-			//LEER DE TECLADO
+			 
+			 DataOutputStream dos = new DataOutputStream( socket.getOutputStream());
+			 DataInputStream dis = new DataInputStream( socket.getInputStream() );
+			 do{ 
+			//TEXT ENTRY
 			 System.out.println("WRITE A MESSAGE: ");
 			 Scanner myPetition = new Scanner(System.in);
 			 petition = myPetition.nextLine();
 
 			 System.out.println("I'M SENDING MY PETITION: " + petition);
-			 DataOutputStream dos = new DataOutputStream( socket.getOutputStream());
+			 
 			 dos.writeUTF(petition);
-			 DataInputStream dis = new DataInputStream( socket.getInputStream() );
-			 answer = dis.readUTF();
-			 System.out.println("THE SERVER'S MESSAGE IS: " + answer);
+			 //answer = dis.readUTF();
+			  //SUDO GEDIT WITH LS
+			 //if(answer.equals("pwd")){ 
+				
+			//}
+
+			 //System.out.println("THE SERVER'S MESSAGE IS: " + answer);
+			 }
+			 while(!petition.equals("close"));
 			 dos.close();
 			 dis.close();
 			 socket.close();
@@ -33,5 +51,14 @@ public class Client{
 			 System.out.println("java.io.IOException generated");
 			 e.printStackTrace();
 			 }
-	}
-}
+		}
+	}	
+
+
+
+
+
+
+
+
+

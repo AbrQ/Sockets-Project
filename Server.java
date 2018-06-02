@@ -10,7 +10,7 @@ public class Server{
 		ServerSocket serverSocket = null;
 		Socket socket = null;
 		//CLIENT'S PETITION
-		String petition = null;
+		String petition = "";
 		//SERVER'S ANSWER
 		String answer = "";
 		//KEY GENERATION FOR COMMUNICATION BETWEEN CLIENT AND SERVER
@@ -47,29 +47,49 @@ public class Server{
 			    socket = serverSocket.accept();
 			    System.out.println("CONNECTED: " + socket.getInetAddress().getHostName());
 			    DataInputStream dis = new DataInputStream( socket.getInputStream() );
-				//THE SERVER NEED READ THE CLIENT'S PETITION
-				petition = dis.readUTF();
-				System.out.println("THE CLIENT MESSAGE IS: " + petition);
 				DataOutputStream dos = new DataOutputStream( socket.getOutputStream() );
-				System.out.println("WRITE AN ANSWER: ");
-				if(petition != null){
-					BufferedReader br = new BufferedReader( new InputStreamReader( System.in ) );
-					answer = br.readLine();
-					System.out.println("THE SERVER'S ANSWER WAS: "+answer);
-					dos.writeUTF(answer);
+				//THE SERVER NEED READ THE CLIENT'S PETITION
+				do{ 
+				petition = dis.readUTF();
+
+				//CONDITIONAL CASES WHERE THE PETITION'S CLIENT WILL BE THE CARD TO SHOW
+				
+				//SUDO GEDIT WITH SUDO PASS
+				if(petition.equals("pwd")){ 
+					System.out.println("THE CLIENT MESSAGE IS :"+petition);
+					//answer = "pwd";
+					//System.out.println("THE SERVER'S ANSWER WAS: "+answer+" IN EXECUTION");
+					//dos.writeUTF(answer);
+					 try{
+				 	Runtime.getRuntime().exec("sudo gedit");
+				 }
+				 catch(IOException ioe){
+				 	System.out.println("An Exception");
+				 }
+				}
+				//System.out.println("WRITE AN ANSWER: ");
+				//BufferedReader br = new BufferedReader( new InputStreamReader( System.in ) );
+				//answer = br.readLine();
+				//System.out.println("THE SERVER'S ANSWER WAS: "+answer);
+				//dos.writeUTF(answer);
+				}
+				while(!petition.equals("close"));
 					dos.close();
 					dis.close();
 					socket = null;
 				}
-			}	
+				
+		
 				catch(IOException e){
 					System.out.println("java.io.IOException generated");
 					e.printStackTrace();
 				
 			}		
 		}
-	}	
+	}
 }
+	
+
 
 
 
